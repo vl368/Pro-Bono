@@ -32,6 +32,19 @@ fun LoginPageLayout(){
     }
 }
 
+@Composable
+fun accountInformation(prompt: String): String {
+    var text by remember { mutableStateOf("") }
+    TextField(
+        value = text,
+        onValueChange = { newText ->
+            text = newText
+        },
+        label = { Text(prompt) },
+    )
+    return text
+}
+
 @Preview(showSystemUi = true)
 @Composable
 fun LoginPreview() {
