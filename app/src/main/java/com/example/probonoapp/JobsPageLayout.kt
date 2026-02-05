@@ -24,76 +24,52 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 
 @Composable
-fun WritePostLayout(){
-    Surface {
-        makePost()
-    }
-}
-
-@Composable
 fun JobsPageLayout(posts: MutableList<Post>){
-    Surface() {
+    Column(horizontalAlignment = Alignment.CenterHorizontally) {
+        Spacer(Modifier.height(30.dp))
+        Text(
+            text = "Open Jobs",
+            fontSize = 30.sp,
+            fontWeight = FontWeight.Bold
+        )
         LazyColumn(
-            modifier = Modifier.padding(16.dp)
-        ){
+            modifier = Modifier.padding(start = 15.dp, end = 15.dp, top = 15.dp, bottom = 30.dp),
+        ) {
             items(posts.size) { i ->
                 postVisuals(posts.get(i))
+                Spacer(Modifier.height(10.dp))
             }
         }
     }
 }
 
-@Composable
-fun makePost() {
-    Column() {
-        val t = postInformation("Subject")
-        Spacer(modifier = Modifier.size(10.dp))
-        val cat = postInformation("Classification")
-        Spacer(modifier = Modifier.size(10.dp))
-        val due = postInformation("Date")
-        Spacer(modifier = Modifier.size(10.dp))
-        val desc = postInformation("Description")
-
-        // submit then create post obj thru data manager
-    }
-}
-
-@Composable()
-fun postVisuals(post: Post){
-    Column() {
+fun postVisuals(p: Post){
+    Column(Modifier.fillMaxWidth()
+        .background(Color(186, 200, 222))
+        .padding(all = 5.dp)
+    ) {
         Text(
-            text = post.title,
+            text = p.title,
             fontSize = 30.sp,
         )
         Row(horizontalArrangement = Arrangement.Center) {
             Text(
-                text = "Needed by: " + post.postedAt,
+                text = "Needed by: " + p.date,
                 fontSize = 15.sp,
             )
             Spacer(modifier = Modifier.size(20.dp))
             Text(
-                text = "Case Specialities: ", // + post, // leave this alone ill implement this its not singular
+                text = "Case Category: " + p.category,
                 fontSize = 15.sp,
             )
         }
         Text(
-            text = post.description,
+            text = p.description,
+            color = Color.White,
             fontSize = 20.sp,
-            modifier = Modifier.clip(RoundedCornerShape(16.dp))
+            modifier = Modifier.clip(RoundedCornerShape(5.dp))
                 .background(Color(46, 74, 120))
+                .padding(all = 3.dp)
         )
     }
-}
-
-@Composable
-fun postInformation(prompt: String): String {
-    var text by remember { mutableStateOf("") }
-    TextField(
-        value = text,
-        onValueChange = { newText ->
-            text = newText
-        },
-        label = { Text(prompt) },
-    )
-    return text
 }
