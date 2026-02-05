@@ -1,0 +1,53 @@
+package com.example.probonoapp
+import androidx.compose.runtime.Composable
+
+@Composable
+fun WritePostLayout(){
+    var enterPost = false
+    Column (horizontalAlignment = Alignment.CenterHorizontally){
+
+        Spacer(modifier = Modifier.height(180.dp))
+        Text(
+            text = "Job Post",
+            fontSize = 30.sp,
+            fontWeight = FontWeight.Bold
+        )
+        Spacer(modifier = Modifier.height(40.dp))
+        val p = makePost()
+        Spacer(modifier = Modifier.height(40.dp))
+        Button(onClick = {enterPost = !enterPost}){
+            Text(
+                text = "Confirm"
+            )
+        }
+    }
+}
+
+@Composable
+fun makePost(): Post {
+    var p = Post()
+    Column(horizontalAlignment = Alignment.CenterHorizontally) {
+        val t = postInformation("Subject")
+        Spacer(modifier = Modifier.size(10.dp))
+        val cat = postInformation("Classification")
+        Spacer(modifier = Modifier.size(10.dp))
+        val due = postInformation("Date")
+        Spacer(modifier = Modifier.size(10.dp))
+        val desc = postInformation("Description")
+        p = Post(t, cat, due, desc)
+    }
+    return p
+}
+
+@Composable
+fun postInformation(prompt: String): String {
+    var text by remember { mutableStateOf("") }
+    TextField(
+        value = text,
+        onValueChange = { newText ->
+            text = newText
+        },
+        label = { Text(prompt) },
+    )
+    return text
+}
