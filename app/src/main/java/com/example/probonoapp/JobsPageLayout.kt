@@ -5,6 +5,8 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
@@ -17,9 +19,12 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 
@@ -36,35 +41,36 @@ fun JobsPageLayout(posts: MutableList<Post>){
             modifier = Modifier.padding(start = 15.dp, end = 15.dp, top = 15.dp, bottom = 30.dp),
         ) {
             items(posts.size) { i ->
-                postVisuals(posts.get(i))
+                PostVisuals(posts.get(i))
                 Spacer(Modifier.height(10.dp))
             }
         }
     }
 }
 
-fun postVisuals(p: Post){
+@Composable
+fun PostVisuals(post: Post) {
     Column(Modifier.fillMaxWidth()
         .background(Color(186, 200, 222))
         .padding(all = 5.dp)
     ) {
         Text(
-            text = p.title,
+            text = post.title,
             fontSize = 30.sp,
         )
         Row(horizontalArrangement = Arrangement.Center) {
             Text(
-                text = "Needed by: " + p.date,
+                text = "Needed by: " + post.postedAt,
                 fontSize = 15.sp,
             )
             Spacer(modifier = Modifier.size(20.dp))
             Text(
-                text = "Case Category: " + p.category,
+                text = "Case Specialities: ", // @TO DO
                 fontSize = 15.sp,
             )
         }
         Text(
-            text = p.description,
+            text = post.description,
             color = Color.White,
             fontSize = 20.sp,
             modifier = Modifier.clip(RoundedCornerShape(5.dp))
@@ -72,4 +78,10 @@ fun postVisuals(p: Post){
                 .padding(all = 3.dp)
         )
     }
+}
+
+@Preview(showSystemUi = true)
+@Composable
+fun PreviewJobs() {
+    JobsPageLayout(mutableListOf())
 }

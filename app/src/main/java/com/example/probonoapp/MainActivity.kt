@@ -32,7 +32,9 @@ fun MainLayout() {
     NavHost(navController = navController, startDestination = "login_page") {
         composable("login_page") {
             LoginPageLayout(
-                navController = navController
+                navController = navController,
+                dataManager = dataManager,
+                scope = coroutineScope
             )
         }
         composable("jobs_page") {

@@ -4,6 +4,7 @@ import android.content.Context
 import androidx.datastore.core.DataStore
 import androidx.datastore.dataStore
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
 
 val Context.userDataStore: DataStore<UserList> by dataStore(
@@ -70,8 +71,7 @@ class DataManager(private val context: Context) {
         emailAddress: String,
         firstName: String,
         lastName: String,
-        zipCode: Int,
-        profilePicture: String,
+        zipCode: String,
         volunteer: Boolean,
         client: Boolean,
         firmName: String? = null,
@@ -87,7 +87,6 @@ class DataManager(private val context: Context) {
             .setFirstName(firstName)
             .setLastName(lastName)
             .setZipCode(zipCode)
-            .setProfilePicture(profilePicture)
             .setVolunteer(volunteer)
             .setClient(client)
         if (firmName != null) {
@@ -218,8 +217,7 @@ class DataManager(private val context: Context) {
             emailAddress = "jdoe@example.com",
             firstName = "John",
             lastName = "Doe",
-            zipCode = 19104,
-            profilePicture = "https://example.com/profiles/jdoe.jpg",
+            zipCode = "19104",
             volunteer = true,
             client = false,
             firmName = "Doe & Associates",
@@ -233,8 +231,7 @@ class DataManager(private val context: Context) {
             emailAddress = "asmith@example.com",
             firstName = "Alice",
             lastName = "Smith",
-            zipCode = 10001,
-            profilePicture = "https://example.com/profiles/asmith.jpg",
+            zipCode = "10001",
             volunteer = true,
             client = false,
             firmName = "NY Public Defender Office",
@@ -248,8 +245,7 @@ class DataManager(private val context: Context) {
             emailAddress = "mgarcia@example.com",
             firstName = "Maria",
             lastName = "Garcia",
-            zipCode = 90210,
-            profilePicture = "https://example.com/profiles/mgarcia.jpg",
+            zipCode = "90210",
             volunteer = false,
             client = true,
             occupation = "Restaurant Worker"
@@ -260,8 +256,7 @@ class DataManager(private val context: Context) {
             emailAddress = "tjohnson@example.com",
             firstName = "Thomas",
             lastName = "Johnson",
-            zipCode = 60616,
-            profilePicture = "https://example.com/profiles/tjohnson.jpg",
+            zipCode = "60616",
             volunteer = false,
             client = true,
             occupation = "Delivery Driver"
@@ -272,8 +267,7 @@ class DataManager(private val context: Context) {
             emailAddress = "lchen@example.com",
             firstName = "Linda",
             lastName = "Chen",
-            zipCode = 94105,
-            profilePicture = "https://example.com/profiles/lchen.jpg",
+            zipCode = "94105",
             volunteer = true,
             client = false,
             firmName = "Chen Legal Group",
@@ -281,5 +275,17 @@ class DataManager(private val context: Context) {
             barNumber = "CA246810",
             specialities = listOf("Employment Law", "Housing Law")
         )
+    }
+
+    suspend fun findUser(userName: String, password: String, client: Boolean): Boolean {
+        val storedList = context.userDataStore.data.first()
+
+        val user = storedList.usersList.firstOrNull {
+            it.userName == userName &&
+                    it.password == password &&
+                    it.client == client
+        }
+
+        return user != null
     }
 }

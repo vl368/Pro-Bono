@@ -9,13 +9,12 @@ message User {
     string email_address = 3;
     string first_name = 4;
     string last_name = 5;
-    int32 zip_code = 6;
+    string zip_code = 6;
     optional VolunteerProfile volunteer_info = 7;
     optional ClientProfile client_info = 8;
     repeated string active_conversation_ids = 9;
-    string profile_picture = 10;
-    bool volunteer = 11;
-    bool client = 12;
+    bool volunteer = 10;
+    bool client = 11;
 }
 
 message VolunteerProfile {
