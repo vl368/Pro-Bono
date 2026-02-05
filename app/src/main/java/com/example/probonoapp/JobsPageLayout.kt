@@ -44,8 +44,7 @@ fun JobsPageLayout(posts: MutableList<Post>){
 }
 
 @Composable
-fun makePost(): Post {
-    var post = Post()
+fun makePost() {
     Column() {
         val t = postInformation("Subject")
         Spacer(modifier = Modifier.size(10.dp))
@@ -54,9 +53,9 @@ fun makePost(): Post {
         val due = postInformation("Date")
         Spacer(modifier = Modifier.size(10.dp))
         val desc = postInformation("Description")
-        p = Post(t, cat, due, desc)
+
+        // submit then create post obj thru data manager
     }
-    return post
 }
 
 @Composable()
@@ -73,7 +72,7 @@ fun postVisuals(post: Post){
             )
             Spacer(modifier = Modifier.size(20.dp))
             Text(
-                text = "Case Category: " + post, // leave this alone ill implement this its not singular
+                text = "Case Specialities: ", // + post, // leave this alone ill implement this its not singular
                 fontSize = 15.sp,
             )
         }

@@ -50,7 +50,9 @@ fun MainLayout() {
             LoginPageLayout()
         }
         composable("jobs_page") {
-            JobsPageLayout()
+            JobsPageLayout(
+                posts = TODO()
+            )
         }
     }
 }
