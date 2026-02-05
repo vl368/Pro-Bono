@@ -46,6 +46,7 @@ dependencies {
     implementation("androidx.lifecycle:lifecycle-viewmodel-compose:2.10.0")
     implementation("androidx.datastore:datastore:1.2.0")
     implementation("com.google.protobuf:protobuf-kotlin-lite:4.33.1")
+    implementation("androidx.navigation:navigation-compose:2.9.6")
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
     implementation(libs.androidx.activity.compose)

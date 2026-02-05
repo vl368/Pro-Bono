@@ -115,7 +115,8 @@ class DataManager(private val context: Context) {
         title: String,
         specialities: List<String> = listOf(),
         description: String,
-        creatorUserName: String
+        creatorUserName: String,
+        postedAt: String
     ) {
         val postId = "${(100000..999999).random()}"
         val post = Post.newBuilder()
@@ -123,6 +124,7 @@ class DataManager(private val context: Context) {
             .setDescription(description)
             .setCreatorUserName(creatorUserName)
             .setPostId(postId)
+            .setPostedAt(postedAt)
         for ((index, speciality) in specialities.withIndex()) {
             post.setSpecialities(index, speciality)
         }
@@ -134,7 +136,7 @@ class DataManager(private val context: Context) {
     suspend fun addMessage(
         senderUserName: String,
         content: String,
-        sentAt: Long,
+        sentAt: String,
         conversationId: String
     ) {
         val newMessage = Message.newBuilder()
