@@ -1,0 +1,62 @@
+syntax = "proto3";
+
+option java_package = "com.example.probonoapp";
+option java_multiple_files = true;
+
+message User {
+    string user_name = 1;
+    string password = 2;
+    string email_address = 3;
+    string first_name = 4;
+    string last_name = 5;
+    int32 zip_code = 6;
+    optional VolunteerProfile volunteer_info = 7;
+    optional ClientProfile client_info = 8;
+    repeated string active_conversation_ids = 9;
+    string profile_picture = 10;
+    bool volunteer = 11;
+    bool client = 12;
+}
+
+message VolunteerProfile {
+    string firm_name = 1;
+    string education = 2;
+    string bar_number = 3;
+    repeated string specialities = 4;
+}
+
+message ClientProfile {
+    string occupation = 1;
+}
+
+message UserList {
+    repeated User users = 1;
+}
+
+message Post {
+    string title = 1;
+    repeated string specialities = 2;
+    string description = 3;
+    string creator_user_name = 4;
+    string post_id = 5;
+}
+
+message PostList {
+    repeated Post posts = 1;
+}
+
+message Message {
+    string sender_user_name = 1;
+    string content = 2;
+    int64 sent_at = 3;
+}
+
+message Conversation {
+    repeated string participant_user_names = 1;
+    repeated Message messages = 2;
+    string conversation_id = 3;
+}
+
+message ConversationList {
+    repeated Conversation conversations = 1;
+}
