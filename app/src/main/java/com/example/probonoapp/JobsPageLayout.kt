@@ -15,22 +15,29 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
+import androidx.navigation.compose.rememberNavController
+import kotlinx.coroutines.CoroutineScope
 
 @Composable
-fun JobsPageLayout(posts: MutableList<Post>){
+fun JobsPageLayout(navController: NavController, dataManager: DataManager, scope: CoroutineScope){
     Column(horizontalAlignment = Alignment.CenterHorizontally) {
+        val posts: List<Post> = dataManager.getPosts().collectAsState(initial = emptyList(), scope.coroutineContext) as List<Post>
         Spacer(Modifier.height(30.dp))
         Text(
             text = "Open Jobs",
@@ -41,7 +48,7 @@ fun JobsPageLayout(posts: MutableList<Post>){
             modifier = Modifier.padding(start = 15.dp, end = 15.dp, top = 15.dp, bottom = 30.dp),
         ) {
             items(posts.size) { i ->
-                PostVisuals(posts.get(i))
+                PostVisuals(posts[i])
                 Spacer(Modifier.height(10.dp))
             }
         }
@@ -83,5 +90,9 @@ fun PostVisuals(post: Post) {
 @Preview(showSystemUi = true)
 @Composable
 fun PreviewJobs() {
-    JobsPageLayout(mutableListOf())
+    val context = LocalContext.current
+    val coroutineScope = rememberCoroutineScope()
+    val dataManager = remember { DataManager(context) }
+    val navController = rememberNavController()
+    JobsPageLayout(navController, dataManager, coroutineScope)
 }

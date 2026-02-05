@@ -22,6 +22,7 @@ import androidx.compose.material3.SwitchDefaults
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
@@ -72,6 +73,7 @@ fun LoginPageLayout(navController: NavController, dataManager: DataManager, scop
         var moveOn by remember { mutableStateOf(false) }
         val legalBlue1 = Color(52, 51, 101)
         val legalBlue2 = Color(0, 100, 160)
+
         if (!moveOn) {
             Spacer(modifier = Modifier.size(60.dp))
             Image(
@@ -156,42 +158,39 @@ fun LoginPageLayout(navController: NavController, dataManager: DataManager, scop
             }
             Button(
                     onClick = {
-                        if (isClient) {
-                            scope.launch {
-                                dataManager.addUser(
-                                    userName,
-                                    password,
-                                    emailAddress,
-                                    firstName,
-                                    lastName,
-                                    zipCode,
-                                    !isClient,
-                                    isClient,
-                                    occupation = occupation
-                                )
-                            }
-                        }
-                        else {
-                            scope.launch {
-                                dataManager.addUser(
-                                    userName,
-                                    password,
-                                    emailAddress,
-                                    firstName,
-                                    lastName,
-                                    zipCode,
-                                    !isClient,
-                                    isClient,
-                                    firmName,
-                                    education,
-                                    barNumber,
-                                    specialitiesToggleList
-                                        .mapIndexedNotNull { index, value ->
-                                            if (value == true) specialitiesList[index] else null
-                                        }
-                                )
-                            }
-                        }
+//                        scope.launch {
+//                            if (isClient) {
+//                                dataManager.addUser(
+//                                    userName,
+//                                    password,
+//                                    emailAddress,
+//                                    firstName,
+//                                    lastName,
+//                                    zipCode,
+//                                    !isClient,
+//                                    isClient,
+//                                    occupation = occupation
+//                                )
+//                            } else {
+//                                dataManager.addUser(
+//                                    userName,
+//                                    password,
+//                                    emailAddress,
+//                                    firstName,
+//                                    lastName,
+//                                    zipCode,
+//                                    !isClient,
+//                                    isClient,
+//                                    firmName,
+//                                    education,
+//                                    barNumber,
+//                                    specialitiesToggleList
+//                                        .mapIndexedNotNull { index, value ->
+//                                            if (value) specialitiesList[index] else null
+//                                        }
+//                                )
+//                            }
+//                        }
                         navController.navigate("jobs_page")
                     },
             colors = ButtonDefaults.buttonColors(

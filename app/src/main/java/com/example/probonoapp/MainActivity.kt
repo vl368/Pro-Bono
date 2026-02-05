@@ -5,6 +5,8 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -29,6 +31,7 @@ fun MainLayout() {
     val coroutineScope = rememberCoroutineScope()
     val dataManager = remember { DataManager(context) }
     val navController = rememberNavController()
+
     NavHost(navController = navController, startDestination = "login_page") {
         composable("login_page") {
             LoginPageLayout(
@@ -39,7 +42,9 @@ fun MainLayout() {
         }
         composable("jobs_page") {
             JobsPageLayout(
-                posts = TODO()
+                navController = navController,
+                dataManager = dataManager,
+                scope = coroutineScope
             )
         }
     }
