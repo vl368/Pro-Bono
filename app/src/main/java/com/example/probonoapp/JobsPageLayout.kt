@@ -35,9 +35,9 @@ import androidx.navigation.compose.rememberNavController
 import kotlinx.coroutines.CoroutineScope
 
 @Composable
-fun JobsPageLayout(navController: NavController, dataManager: DataManager, scope: CoroutineScope){
+fun JobsPageLayout(navController: NavController, postDataManager: PostDataManager, scope: CoroutineScope){
     Column(horizontalAlignment = Alignment.CenterHorizontally) {
-        val posts: List<Post> = dataManager.getPosts().collectAsState(initial = emptyList(), scope.coroutineContext) as List<Post>
+        val posts by postDataManager.getPosts().collectAsState(initial = emptyList(), scope.coroutineContext)
         Spacer(Modifier.height(30.dp))
         Text(
             text = "Open Jobs",
@@ -92,7 +92,7 @@ fun PostVisuals(post: Post) {
 fun PreviewJobs() {
     val context = LocalContext.current
     val coroutineScope = rememberCoroutineScope()
-    val dataManager = remember { DataManager(context) }
+    val postDataManager = remember { PostDataManager(context) }
     val navController = rememberNavController()
-    JobsPageLayout(navController, dataManager, coroutineScope)
+    JobsPageLayout(navController, postDataManager, coroutineScope)
 }

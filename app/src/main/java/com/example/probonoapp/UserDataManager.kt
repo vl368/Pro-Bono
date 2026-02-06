@@ -12,32 +12,11 @@ val Context.userDataStore: DataStore<UserList> by dataStore(
     serializer = UserListSerializer
 )
 
-val Context.postDataStore: DataStore<PostList> by dataStore(
-    fileName = "app_schema.pb",
-    serializer = PostListSerializer
-)
 
-val Context.conversationDataStore: DataStore<ConversationList> by dataStore(
-    fileName = "app_schema.pb",
-    serializer = ConversationListSerializer
-)
-
-class DataManager(private val context: Context) {
+class UserDataManager(private val context: Context) {
     fun getUsers(): Flow<List<User>> {
         return context.userDataStore.data.map { storedList ->
             storedList.usersList
-        }
-    }
-
-    fun getPosts(): Flow<List<Post>> {
-        return context.postDataStore.data.map { storedList ->
-            storedList.postsList
-        }
-    }
-
-    fun getConversations(): Flow<List<Conversation>> {
-        return context.conversationDataStore.data.map { storedList ->
-            storedList.conversationsList
         }
     }
 
@@ -45,22 +24,6 @@ class DataManager(private val context: Context) {
         return context.userDataStore.data.map { storedList ->
             storedList.usersList.firstOrNull { user ->
                 user.userName == userName
-            }
-        }
-    }
-
-    fun getPost(postId: String): Flow<Post?> {
-        return context.postDataStore.data.map { storedList ->
-            storedList.postsList.firstOrNull { post ->
-                post.postId == postId
-            }
-        }
-    }
-
-    fun getConversation(conversationId: String): Flow<Conversation?> {
-        return context.conversationDataStore.data.map { storedList ->
-            storedList.conversationsList.firstOrNull { conversation ->
-                conversation.conversationId == conversationId
             }
         }
     }
@@ -110,67 +73,6 @@ class DataManager(private val context: Context) {
         }
     }
 
-    suspend fun addPost(
-        title: String,
-        specialities: List<String> = listOf(),
-        description: String,
-        creatorUserName: String,
-        postedAt: String
-    ) {
-        val postId = "${(100000..999999).random()}"
-        val post = Post.newBuilder()
-            .setTitle(title)
-            .setDescription(description)
-            .setCreatorUserName(creatorUserName)
-            .setPostId(postId)
-            .setPostedAt(postedAt)
-        for ((index, speciality) in specialities.withIndex()) {
-            post.setSpecialities(index, speciality)
-        }
-        context.postDataStore.updateData { storedList ->
-            storedList.toBuilder().addPosts(post).build()
-        }
-    }
-
-    suspend fun addMessage(
-        senderUserName: String,
-        content: String,
-        sentAt: String,
-        conversationId: String
-    ) {
-        val newMessage = Message.newBuilder()
-            .setSenderUserName(senderUserName)
-            .setContent(content)
-            .setSentAt(sentAt)
-        context.conversationDataStore.updateData { storedList ->
-            val builder = storedList.toBuilder()
-            val conversation = storedList.conversationsList.firstOrNull() { conversation ->
-                conversation.conversationId == conversationId
-            }
-            deleteConversation(conversationId)
-            builder.addConversations(
-                conversation?.toBuilder()
-                    ?.addMessages(newMessage)
-                    ?.build()
-            )
-            builder.build()
-        }
-    }
-
-    suspend fun addConversation(
-        participantUserNames: List<String> = listOf()
-    ) {
-        val conversationId = "${(100000..999999).random()}"
-        val conversation = Conversation.newBuilder()
-            .setConversationId(conversationId)
-        for ((index, userName) in participantUserNames.withIndex()) {
-            conversation.setParticipantUserNames(index, userName)
-        }
-        context.conversationDataStore.updateData { storedList ->
-            storedList.toBuilder().addConversations(conversation).build()
-        }
-    }
-
     suspend fun deleteUser(userName: String) {
         context.userDataStore.updateData { storedList ->
             val builder = storedList.toBuilder()
@@ -180,32 +82,6 @@ class DataManager(private val context: Context) {
 
             builder.clearUsers()
             builder.addAllUsers(updatedList)
-            builder.build()
-        }
-    }
-
-    suspend fun deletePost(postId: String) {
-        context.postDataStore.updateData { storedList ->
-            val builder = storedList.toBuilder()
-            val updatedList = builder.postsList.filterNot{ post ->
-                post.postId == postId
-            }
-
-            builder.clearPosts()
-            builder.addAllPosts(updatedList)
-            builder.build()
-        }
-    }
-
-    suspend fun deleteConversation(conversationId: String) {
-        context.conversationDataStore.updateData { storedList ->
-            val builder = storedList.toBuilder()
-            val updatedList = builder.conversationsList.filterNot{ conversation ->
-                conversation.conversationId == conversationId
-            }
-
-            builder.clearConversations()
-            builder.addAllConversations(updatedList)
             builder.build()
         }
     }

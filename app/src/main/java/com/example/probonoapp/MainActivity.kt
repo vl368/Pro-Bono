@@ -29,21 +29,23 @@ class MainActivity : ComponentActivity() {
 fun MainLayout() {
     val context = LocalContext.current
     val coroutineScope = rememberCoroutineScope()
-    val dataManager = remember { DataManager(context) }
+    val userDataManager = remember { UserDataManager(context) }
+    val postDataManager = remember { PostDataManager(context) }
+    val conversationDataManager = remember { ConversationDataManager(context) }
     val navController = rememberNavController()
 
     NavHost(navController = navController, startDestination = "login_page") {
         composable("login_page") {
             LoginPageLayout(
                 navController = navController,
-                dataManager = dataManager,
+                userDataManager = userDataManager,
                 scope = coroutineScope
             )
         }
         composable("jobs_page") {
             JobsPageLayout(
                 navController = navController,
-                dataManager = dataManager,
+                postDataManager = postDataManager,
                 scope = coroutineScope
             )
         }

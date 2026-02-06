@@ -49,7 +49,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 
 @Composable
-fun LoginPageLayout(navController: NavController, dataManager: DataManager, scope: CoroutineScope){
+fun LoginPageLayout(navController: NavController, userDataManager: UserDataManager, scope: CoroutineScope){
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Top,
@@ -104,7 +104,7 @@ fun LoginPageLayout(navController: NavController, dataManager: DataManager, scop
                 onClick = {
                     moveOn = true
                     scope.launch {
-                        if (dataManager.findUser(userName, password, isClient)) {
+                        if (userDataManager.findUser(userName, password, isClient)) {
                             navController.navigate("jobs_page")
                         }
                     }
@@ -158,39 +158,39 @@ fun LoginPageLayout(navController: NavController, dataManager: DataManager, scop
             }
             Button(
                     onClick = {
-//                        scope.launch {
-//                            if (isClient) {
-//                                dataManager.addUser(
-//                                    userName,
-//                                    password,
-//                                    emailAddress,
-//                                    firstName,
-//                                    lastName,
-//                                    zipCode,
-//                                    !isClient,
-//                                    isClient,
-//                                    occupation = occupation
-//                                )
-//                            } else {
-//                                dataManager.addUser(
-//                                    userName,
-//                                    password,
-//                                    emailAddress,
-//                                    firstName,
-//                                    lastName,
-//                                    zipCode,
-//                                    !isClient,
-//                                    isClient,
-//                                    firmName,
-//                                    education,
-//                                    barNumber,
-//                                    specialitiesToggleList
-//                                        .mapIndexedNotNull { index, value ->
-//                                            if (value) specialitiesList[index] else null
-//                                        }
-//                                )
-//                            }
-//                        }
+                        scope.launch {
+                            if (isClient) {
+                                userDataManager.addUser(
+                                    userName,
+                                    password,
+                                    emailAddress,
+                                    firstName,
+                                    lastName,
+                                    zipCode,
+                                    !isClient,
+                                    isClient,
+                                    occupation = occupation
+                                )
+                            } else {
+                                userDataManager.addUser(
+                                    userName,
+                                    password,
+                                    emailAddress,
+                                    firstName,
+                                    lastName,
+                                    zipCode,
+                                    !isClient,
+                                    isClient,
+                                    firmName,
+                                    education,
+                                    barNumber,
+                                    specialitiesToggleList
+                                        .mapIndexedNotNull { index, value ->
+                                            if (value) specialitiesList[index] else null
+                                        }
+                                )
+                            }
+                        }
                         navController.navigate("jobs_page")
                     },
             colors = ButtonDefaults.buttonColors(
@@ -236,7 +236,7 @@ fun CreateTextField(prompt: String, value: String, changeVal: (String) -> Unit) 
 fun PreviewLogin() {
     val context = LocalContext.current
     val coroutineScope = rememberCoroutineScope()
-    val dataManager = remember { DataManager(context) }
+    val userDataManager = remember { UserDataManager(context) }
     val navController = rememberNavController()
-    LoginPageLayout(navController, dataManager, coroutineScope)
+    LoginPageLayout(navController, userDataManager, coroutineScope)
 }

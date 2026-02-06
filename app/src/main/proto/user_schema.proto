@@ -31,32 +31,3 @@ message ClientProfile {
 message UserList {
     repeated User users = 1;
 }
-
-message Post {
-    string title = 1;
-    repeated string specialities = 2;
-    string description = 3;
-    string creator_user_name = 4;
-    string post_id = 5;
-    string posted_at = 6;
-}
-
-message PostList {
-    repeated Post posts = 1;
-}
-
-message Message {
-    string sender_user_name = 1;
-    string content = 2;
-    string sent_at = 3;
-}
-
-message Conversation {
-    repeated string participant_user_names = 1;
-    repeated Message messages = 2;
-    string conversation_id = 3;
-}
-
-message ConversationList {
-    repeated Conversation conversations = 1;
-}
